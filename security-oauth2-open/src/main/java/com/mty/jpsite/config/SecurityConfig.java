@@ -1,11 +1,7 @@
 package com.mty.jpsite.config;
 
-import com.mty.jpsite.entity.Permission;
 import com.mty.jpsite.handler.MyAuthenticationFailureHandler;
 import com.mty.jpsite.handler.MyAuthenticationSuccessHandler;
-import com.mty.jpsite.mapper.PermissionMapper;
-import com.mty.jpsite.service.MyUserDetailsService;
-import com.mty.jpsite.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,14 +10,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 /**
  * @author jiangpeng
- * @Description
+ * @Description web 安全拦截配置
  * @date 2019/10/1214:51
  */
 @Component
@@ -31,10 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private MyAuthenticationFailureHandler failureHandler;
     @Autowired
     private MyAuthenticationSuccessHandler successHandler;
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
-    @Autowired
-    private PermissionMapper permissionMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -46,35 +37,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // 实现动态账号与数据库关联 在该地方改为查询数据库
-        auth.userDetailsService(myUserDetailsService).passwordEncoder(new PasswordEncoder() {
-            @Override
-            public String encode(CharSequence rawPassword) {
-                return passwordEncoder.encode(rawPassword);
-            }
-
-            @Override
-            public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                return passwordEncoder.matches(rawPassword, encodedPassword);
-            }
-        });
+        // 手动添加认证用户账号密码
+        auth.inMemoryAuthentication().withUser("jpsite").password(passwordEncoder.encode("111111"))
+                .authorities("showOrder","addOrder","updateOrder","deleteOrder");
     }
 
     /**
      * 配置HttpSecurity 拦截资源
      *
-     * @param http
+     * @param http HttpSecurity
      * @throws Exception
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        List<Permission> permissions = permissionMapper.findAllPermission();
         ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry authorizeRequests =
                 http.authorizeRequests();
-        permissions.forEach(permission -> authorizeRequests.antMatchers(permission.getUrl()).hasAnyAuthority(permission.getPermTag()));
+        // 拦截的url和需要的权限
+        authorizeRequests.antMatchers("/addOrder").hasAnyAuthority("addOrder")
+                .antMatchers("/showOrder").hasAnyAuthority("showOrder")
+                .antMatchers("/updateOrder").hasAnyAuthority("updateOrder")
+                .antMatchers("/deleteOrder").hasAnyAuthority("deleteOrder");
 
-     /*   authorizeRequests.antMatchers("/login").permitAll().antMatchers("/**")
-                .fullyAuthenticated().and().httpBasic();*/
         authorizeRequests.antMatchers("/login").permitAll()
                 .antMatchers("/oauth/**").permitAll()
                 .antMatchers("/**").fullyAuthenticated().and().formLogin().loginPage("/login")
@@ -89,5 +72,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    /**
+     *  加密算法类
+     * @return BCryptPasswordEncoder
+     */
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

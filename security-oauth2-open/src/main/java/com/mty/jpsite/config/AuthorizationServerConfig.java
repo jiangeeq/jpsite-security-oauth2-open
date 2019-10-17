@@ -9,7 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -44,12 +44,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private TokenStore tokenStore;
     @Autowired
-    private ClientDetailsService clientDetailsService;
+    private PasswordEncoder passwordEncoder;
 
     // accessToken有效期两小时
     private int accessTokenValiditySeconds = 7200;
+    // refreshToken有效期两小时
     private int refreshTokenValiditySeconds = 7200;
-
 
     /**
      * 添加商户信息
@@ -59,75 +59,96 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        // withClient appId
-        /*clients.inMemory().withClient("client_1").secret(passwordEncoder().encode("123456"))
+
+        // 先在内存中写死 clientId 和 clientSecret
+        clients.inMemory().withClient("client_1").secret(passwordEncoder.encode("111111"))
                 .authorizedGrantTypes("password", "client_credentials", "refresh_token", "authorization_code").scopes("all")
                 .redirectUris("http://www.baidu.com")
                 .authorities("ROLE_ADMIN", "ROLE_USER")
                 .accessTokenValiditySeconds(accessTokenValiditySeconds)
-                .refreshTokenValiditySeconds(refreshTokenValiditySeconds);*/
-        clients.withClientDetails(clientDetailsService);
+                .refreshTokenValiditySeconds(refreshTokenValiditySeconds);
     }
 
     /**
      * 设置token类型
      *
-     * @param endpoints
+     * @param endpoints 配置授权服务器端点的属性和增强的功能类
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-
+        // token 保存库
         endpoints.tokenStore(tokenStore)
+                // 允许的令牌端点请求方法
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
-                // 刷新token需要
+                // 用于密码授予的AuthenticationManager。刷新token需要
                 .authenticationManager(authenticationManager)
+                // 有权限访问的用户
                 .userDetailsService(userDetailsService);
 
         // 配置tokenServices参数
         DefaultTokenServices tokenServices = new DefaultTokenServices();
+        // 令牌存储的持久性策略。
         tokenServices.setTokenStore(endpoints.getTokenStore());
+        // 是否支持刷新令牌。
         tokenServices.setSupportRefreshToken(false);
+        // 客户端详细信息服务
         tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
+        // 访问令牌增强器，它将在新令牌被保存到令牌存储之前应用到新令牌。
         tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
+        // 访问令牌的默认有效性(以秒为单位)
         tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30));
         endpoints.tokenServices(tokenServices);
     }
 
+    /**
+     * 授权服务器安全配置
+     * @param oauthServer 授权服务器安全配置server类
+     */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-        // 允许表单认证, 允许check_token访问
-        // oauthServer.allowFormAuthenticationForClients().checkTokenAccess("permitAll()");
-
-        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()")
+        // 允许所有token 访问
+        oauthServer.tokenKeyAccess("permitAll()")
+                // 允许check_token访问
+                .checkTokenAccess("isAuthenticated()")
+                // 允许表单认证
                 .allowFormAuthenticationForClients();
     }
 
+    /**
+     * 处理一个 {@link Authentication} 请求在bean
+     * @return AuthenticationManager
+     */
     @Bean
     AuthenticationManager authenticationManager() {
         return authentication -> daoAuthenticationProvider().authenticate(authentication);
     }
 
+    /**
+     * Dao身份验证提供者
+     * @return DaoAuthenticationProvider
+     */
     @Bean
     public AuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         return daoAuthenticationProvider;
     }
 
-
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        // 加密方式
-        return new BCryptPasswordEncoder();
-    }
-
+    /**
+     * token持久化策略
+     * @return JdbcTokenStore
+     */
     @Bean
     public TokenStore tokenStore() {
         return new JdbcTokenStore(dataSource);
     }
 
+    /**
+     * 客户端信息持久化策略
+     * @return JdbcClientDetailsService
+     */
     @Bean
     public ClientDetailsService clientDetailsService() {
         return new JdbcClientDetailsService(dataSource);
