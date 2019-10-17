@@ -1,0 +1,20 @@
+server:
+  port: 8081
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+security:
+  oauth2:
+    resource:
+      ####从认证授权中心上验证token
+      token-info-uri: http://localhost:8080/oauth/check_token
+      prefer-token-info: true
+    client:
+      access-token-uri: http://localhost:8080/oauth/token
+      user-authorization-uri: http://localhost:8080/oauth/authorize
+      ###appid
+      clientId: client_1
+      ###appSecret
+      clientSecret: 111111
