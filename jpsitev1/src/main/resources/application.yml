@@ -1,0 +1,27 @@
+server:
+  port: 8080
+# 配置freemarker
+spring:
+  freemarker:
+    # 设置模板后缀名
+    suffix: .ftl
+    # 设置文档类型
+    content-type: text/html
+    # 设置页面编码格式
+    charset: UTF-8
+    # 设置页面缓存
+    cache: false
+    # 设置ftl文件路径
+    template-loader-path:
+      - classpath:/templates
+  # 设置静态文件路径，js,css等
+  mvc:
+    static-path-pattern: /static/**
+  datasource:
+    name: test
+    url: jdbc:mysql://192.168.104.102:3306/rbac_db
+    username: root
+    password: root
+    # druid 连接池
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
