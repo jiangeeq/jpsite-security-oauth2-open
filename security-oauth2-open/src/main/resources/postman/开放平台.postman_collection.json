@@ -1,0 +1,287 @@
+{
+	"id": "bb22360e-e021-bcb1-97df-7de47f5d2ab5",
+	"name": "开放平台",
+	"description": "",
+	"order": [
+		"f1a3683e-f9bb-4643-e1a3-df970f87b46a",
+		"ea915190-c54d-382a-f310-fb3063218c88",
+		"1811d45b-ef02-712b-41e7-95c366b06752",
+		"3764cfa8-3ae0-6aef-d436-e9f3940215e1",
+		"59d746de-173d-1de0-f4a1-c1159a5ce192",
+		"84283d59-28b8-3384-0da1-c4c0cd75a0fa"
+	],
+	"folders": [],
+	"timestamp": 1570881192172,
+	"owner": 0,
+	"public": false,
+	"published": false,
+	"requests": [
+		{
+			"id": "1811d45b-ef02-712b-41e7-95c366b06752",
+			"headers": "",
+			"url": "http://localhost:8080/oauth/token?grant_type=refresh_token&refresh_token=4741d043-e202-4de0-ae21-4f5c7ec5626e&client_id=client_1&client_secret=123456",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "bb22360e-e021-bcb1-97df-7de47f5d2ab5",
+			"data": null,
+			"dataMode": "params",
+			"name": "刷新新的accessToken",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1570881674649,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "3764cfa8-3ae0-6aef-d436-e9f3940215e1",
+			"headers": "Authorization: bearer 62f8e1e9-497b-47e5-b216-98713b732802\n",
+			"url": "http://127.0.0.1:8081/api/order/addOrder",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "bb22360e-e021-bcb1-97df-7de47f5d2ab5",
+			"data": [
+				{
+					"key": "grant_type",
+					"value": "password",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "admin",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "111111",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_id",
+					"value": "client_1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_secret",
+					"value": "123456",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "scope",
+					"value": "all",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"name": "访问受限制的资源API",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1571046582340,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "59d746de-173d-1de0-f4a1-c1159a5ce192",
+			"headers": "",
+			"url": "http://localhost:8080/oauth/token?grant_type=authorization_code&code=Lkp83R&client_id=client_1&client_secret=111111&redirect_uri=http://www.baidu.com&scope=all",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "bb22360e-e021-bcb1-97df-7de47f5d2ab5",
+			"data": [
+				{
+					"key": "grant_type",
+					"value": "password",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "admin",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "111111",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_id",
+					"value": "client_1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_secret",
+					"value": "123456",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "scope",
+					"value": "all",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"name": "用授权码获取access_token",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1571048162782,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "84283d59-28b8-3384-0da1-c4c0cd75a0fa",
+			"headers": "Cookie: JSESSIONID=72104781F6D1E528E30515E14836C748\n",
+			"url": "http://localhost:8080/oauth/authorize?response_type=code&client_id=client_1&redirect_uri=http://localhost:8080/code",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "bb22360e-e021-bcb1-97df-7de47f5d2ab5",
+			"data": null,
+			"dataMode": "params",
+			"name": "获取授权码",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1571048943120,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "ea915190-c54d-382a-f310-fb3063218c88",
+			"headers": "",
+			"url": "http://localhost:8080/oauth/check_token?token=237d2909-e2c1-46d5-b203-801d2c0ff2a8",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "bb22360e-e021-bcb1-97df-7de47f5d2ab5",
+			"data": [
+				{
+					"key": "grant_type",
+					"value": "password",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "admin",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "111111",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_id",
+					"value": "client_1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_secret",
+					"value": "123456",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "scope",
+					"value": "all",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"name": "验证accessToken是否有效",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1570881379116,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "f1a3683e-f9bb-4643-e1a3-df970f87b46a",
+			"headers": "",
+			"url": "http://localhost:8080/oauth/token",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "grant_type",
+					"value": "password",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "admin",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "111111",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_id",
+					"value": "client_1",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "client_secret",
+					"value": "111111",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "scope",
+					"value": "all",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "params",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1571048054018,
+			"name": "商户id和商户秘钥获取accessToken",
+			"description": "",
+			"collectionId": "bb22360e-e021-bcb1-97df-7de47f5d2ab5",
+			"responses": []
+		}
+	]
+}
