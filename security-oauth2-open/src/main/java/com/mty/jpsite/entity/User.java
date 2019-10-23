@@ -13,7 +13,6 @@ import lombok.Data;
 // 用户信息表
 @Data
 public class User implements UserDetails {
-
 	private Integer id;
 	private String username;
 	private String realname;
@@ -27,6 +26,7 @@ public class User implements UserDetails {
 	// 用户所有权限
 	private List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
+	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
 		return authorities;

@@ -59,13 +59,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        // withClient appId
-        /*clients.inMemory().withClient("client_1").secret(passwordEncoder().encode("123456"))
-                .authorizedGrantTypes("password", "client_credentials", "refresh_token", "authorization_code").scopes("all")
-                .redirectUris("http://www.baidu.com")
-                .authorities("ROLE_ADMIN", "ROLE_USER")
-                .accessTokenValiditySeconds(accessTokenValiditySeconds)
-                .refreshTokenValiditySeconds(refreshTokenValiditySeconds);*/
         clients.withClientDetails(clientDetailsService);
     }
 
@@ -95,9 +88,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-        // 允许表单认证, 允许check_token访问
-        // oauthServer.allowFormAuthenticationForClients().checkTokenAccess("permitAll()");
-
         oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()")
                 .allowFormAuthenticationForClients();
     }

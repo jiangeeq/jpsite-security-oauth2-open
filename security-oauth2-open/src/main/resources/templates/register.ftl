@@ -6,21 +6,12 @@
 </head>
 <body>
 
-	<h1>Jpsite-v1--微服务开放平台授权系统</h1>
-	<form action="/login" method="post">
+	<h1>注册用户</h1>
+	<form action="/addUser" method="post">
 		<span>用户名称</span><input type="text" name="username" /> <br>
+		<span>真实名称</span><input type="text" name="realname" /> <br>
 		<span>用户密码</span><input type="password" name="password" /> <br>
-		<input type="submit" value="登陆">
+		<input type="submit" value="注册">
 	</form>
-
-	<a href="register">注册用户</a>
-	
-<#if RequestParameters['error']??>
-用户名称或者密码错误
-</#if>
-
-
-
-
 </body>
 </html>

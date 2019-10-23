@@ -2,6 +2,7 @@ package com.mty.jpsite.mapper;
 
 import com.mty.jpsite.entity.Permission;
 import com.mty.jpsite.entity.User;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -27,4 +28,11 @@ public interface UserMapper {
             +
             " inner join sys_permission permission on role_permission.perm_id = permission.id where user.username = #{userName};")
     List<Permission> findPermissionByUsername(@Param("userName") String userName);
+
+    @Insert("insert into sys_user(id, username, realname, password, createDate, lastLoginTime, enabled, accountNonExpired, accountNonLocked, credentialsNonExpired) " +
+            "values(#{id}, #{username}, #{realname}, #{password}, #{createDate}, #{lastLoginTime}, #{enabled}, #{accountNonExpired}, #{accountNonLocked}, #{credentialsNonExpired})")
+    int insert(User user);
+
+    @Select("select max(id) from sys_user")
+    int getMaxId();
 }

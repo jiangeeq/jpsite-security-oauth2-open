@@ -73,10 +73,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 http.authorizeRequests();
         permissions.forEach(permission -> authorizeRequests.antMatchers(permission.getUrl()).hasAnyAuthority(permission.getPermTag()));
 
-     /*   authorizeRequests.antMatchers("/login").permitAll().antMatchers("/**")
-                .fullyAuthenticated().and().httpBasic();*/
         authorizeRequests.antMatchers("/login").permitAll()
                 .antMatchers("/oauth/**").permitAll()
+                .antMatchers("/addUser").permitAll()
+                .antMatchers("/register").permitAll()
                 .antMatchers("/**").fullyAuthenticated().and().formLogin().loginPage("/login")
                 .successHandler(successHandler).failureHandler(failureHandler)
                 .and().csrf().disable();
