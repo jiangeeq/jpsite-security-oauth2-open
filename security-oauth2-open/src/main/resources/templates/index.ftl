@@ -7,3 +7,6 @@
 <a href="deleteOrder">删除订单</a>
 <br>
 <a href="updateOrder">修改订单</a>
+----------------------------------
+<br>
+<a href="registClientId">申请获取客户ID和客户密钥</a>
