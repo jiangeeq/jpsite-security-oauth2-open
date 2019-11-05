@@ -12,6 +12,11 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.0.1.RELEASE</version>
     </parent>
+
+    <properties>
+        <docker.image.prefix>jpsite</docker.image.prefix>
+    </properties>
+
     <!-- 管理依赖 -->
     <dependencyManagement>
         <dependencies>
@@ -83,4 +88,26 @@
         </repository>
     </repositories>
 
+    <build>
+        <plugins>
+            <!-- Docker maven plugin -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+            <!-- Docker maven plugin -->
+        </plugins>
+    </build>
 </project>
