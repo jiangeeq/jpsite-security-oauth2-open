@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.jls.springboot</groupId>
-    <artifactId>jpsite-security-oath2</artifactId>
+    <artifactId>security-oauth2-open</artifactId>
     <version>1.0-SNAPSHOT</version>
     <parent>
         <groupId>org.springframework.boot</groupId>

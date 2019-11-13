@@ -11,7 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ErrorController {
     @GetMapping("/error/403")
-    public String error(){
+    public String error403(){
         return "/error/403";
+    }
+
+    @GetMapping("/error/404")
+    public String error404(){
+        return "/error/404";
     }
 }

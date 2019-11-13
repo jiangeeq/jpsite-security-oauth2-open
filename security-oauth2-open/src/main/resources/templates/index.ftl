@@ -9,4 +9,4 @@
 <a href="updateOrder">修改订单</a>
 ----------------------------------
 <br>
-<a href="registClientId">申请获取客户ID和客户密钥</a>
+<a href="registerClientId">申请获取客户ID和客户密钥</a>

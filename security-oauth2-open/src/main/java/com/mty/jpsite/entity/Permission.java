@@ -2,6 +2,10 @@ package com.mty.jpsite.entity;
 
 import lombok.Data;
 
+/**
+ * 系统权限表
+ * @author jiangpeng
+ */
 @Data
 public class Permission {
 	private Integer id;

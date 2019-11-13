@@ -3,9 +3,8 @@ package com.mty.jpsite.entity;
 import lombok.Data;
 
 /**
+ * oauth 客户秘钥表
  * @author jiangpeng
- * @Description
- * @date 2019/10/2319:49
  */
 @Data
 public class OauthClientDetails {

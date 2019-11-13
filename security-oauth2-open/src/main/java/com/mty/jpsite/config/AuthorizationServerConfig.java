@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2019/10/1217:06
  */
 @Configuration
-// 开启认证授权中心
+/** 开启认证授权中心*/
 @EnableAuthorizationServer
 @Slf4j
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -45,11 +45,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private TokenStore tokenStore;
     @Autowired
     private ClientDetailsService clientDetailsService;
-
-    // accessToken有效期两小时
-    private int accessTokenValiditySeconds = 7200;
-    private int refreshTokenValiditySeconds = 7200;
-
 
     /**
      * 添加商户信息

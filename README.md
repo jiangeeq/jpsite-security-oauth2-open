@@ -12,7 +12,6 @@
 1. 用户可以申请获取客户ID和客户密钥
 2. 用户可以通过客户ID获取授权码
 3. 用户可以通过客户ID和密钥以及授权码获取access token 和referrsh token和scope
-4. 同一用户不同来源获取的token不同
 
 #### 资源api服务（order-service/open-api-service）
 1. 可自定义配置需授权url
