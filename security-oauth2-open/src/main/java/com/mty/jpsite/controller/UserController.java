@@ -9,11 +9,14 @@ import com.mty.jpsite.mapper.UserRoleMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.mty.jpsite.mapper.OauthClientDetailsMapper;
+
 import java.util.Date;
 import java.util.Random;
 
@@ -22,7 +25,7 @@ import java.util.Random;
  * @Description
  * @date 2019/10/2315:22
  */
-@RestController
+@Controller
 public class UserController {
     @Autowired
     private UserMapper userMapper;
@@ -36,7 +39,36 @@ public class UserController {
     private UserClientSecretMapper userClientSecretMapper;
 
     /**
+     * 首页
+     */
+    @RequestMapping("/")
+    public String index() {
+        return "index";
+    }
+
+    /**
+     * 自定义登陆页面
+     *
+     * @return String
+     */
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
+    /**
+     * 注册新用户
+     *
+     * @return String
+     */
+    @RequestMapping("/register")
+    public String register() {
+        return "register";
+    }
+
+    /**
      * 注册用户
+     *
      * @param user user
      * @return String
      */
@@ -58,14 +90,15 @@ public class UserController {
     }
 
     /**
-     *  申请获取客户ID和客户密钥
+     * 申请获取客户ID和客户密钥
+     *
      * @return String
      */
     @GetMapping("/registerClientId")
     @ResponseBody
     public String registerClientId() {
-        User principal = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(principal == null){
+        User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal == null) {
             throw new NullPointerException("用户未登录");
         }
 

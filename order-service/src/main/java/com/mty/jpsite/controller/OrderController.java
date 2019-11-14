@@ -1,5 +1,6 @@
 package com.mty.jpsite.controller;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,19 +13,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/order")
 public class OrderController {
 
-    @RequestMapping("/addOrder")
+    @GetMapping("/")
+    public String order() {
+        return "order";
+    }
+
+    @GetMapping("/addOrder")
     public String addOrder() {
         return "addOrder";
     }
-    @RequestMapping("/updateOrder")
+
+    @GetMapping("/updateOrder")
     public String updateOrder() {
         return "updateOrder";
     }
-    @RequestMapping("/queryOrder")
+
+    @GetMapping("/queryOrder")
     public String queryOrder() {
         return "queryOrder";
     }
-    @RequestMapping("/deleteOrder")
+
+    @GetMapping("/deleteOrder")
     public String deleteOrder() {
         return "deleteOrder";
     }

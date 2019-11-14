@@ -5,7 +5,6 @@ import com.mty.jpsite.handler.MyAuthenticationFailureHandler;
 import com.mty.jpsite.handler.MyAuthenticationSuccessHandler;
 import com.mty.jpsite.mapper.PermissionMapper;
 import com.mty.jpsite.service.MyUserDetailsService;
-import com.mty.jpsite.util.MD5Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +20,7 @@ import java.util.List;
 
 /**
  * @author jiangpeng
- * @Description
+ * @Description web 安全拦截配置
  * @date 2019/10/1214:51
  */
 @Component
@@ -46,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // 实现动态账号与数据库关联 在该地方改为查询数据库
+        // 实现动态账号与数据库关联(查询数据库)
         auth.userDetailsService(myUserDetailsService).passwordEncoder(new PasswordEncoder() {
             @Override
             public String encode(CharSequence rawPassword) {
@@ -54,8 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             }
 
             @Override
-            public boolean matches(CharSequence rawPassword, String encodedPassword) {
-                return passwordEncoder.matches(rawPassword, encodedPassword);
+            public boolean matches(CharSequence rawPassword, String dbPassword) {
+                return passwordEncoder.matches(rawPassword, dbPassword);
             }
         });
     }

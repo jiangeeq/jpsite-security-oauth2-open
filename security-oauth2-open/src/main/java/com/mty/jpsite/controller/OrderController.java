@@ -3,18 +3,13 @@ package com.mty.jpsite.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
+@RestController
 public class OrderController {
-	// 首页
-	@RequestMapping("/")
-	public String index() {
-		return "index";
-	}
 
-	// 首页
 	@RequestMapping("/code")
 	//@ResponseBody
 	public String index(HttpServletRequest request) {
@@ -44,16 +39,5 @@ public class OrderController {
 	@RequestMapping("/deleteOrder")
 	public String deleteOrder() {
 		return "deleteOrder";
-	}
-
-	// 自定义登陆页面
-	@GetMapping("/login")
-	public String login() {
-		return "login";
-	}
-
-	@RequestMapping("/register")
-	public String register(){
-		return "register";
 	}
 }

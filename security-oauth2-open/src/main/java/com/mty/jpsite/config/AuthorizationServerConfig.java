@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2019/10/1217:06
  */
 @Configuration
-/** 开启认证授权中心*/
+// 开启认证授权中心
 @EnableAuthorizationServer
 @Slf4j
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -64,34 +64,57 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-
+        // token 保存库
         endpoints.tokenStore(tokenStore)
+                // 允许的令牌端点请求方法
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
-                // 刷新token需要
+                // 用于密码授予的AuthenticationManager。刷新token需要
                 .authenticationManager(authenticationManager)
+                // 有权限访问的用户
                 .userDetailsService(userDetailsService);
 
         // 配置tokenServices参数
         DefaultTokenServices tokenServices = new DefaultTokenServices();
+        // 令牌存储的持久性策略。
         tokenServices.setTokenStore(endpoints.getTokenStore());
+        // 是否支持刷新令牌。
         tokenServices.setSupportRefreshToken(false);
+        // 客户端详细信息服务
         tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
+        // 访问令牌增强器，它将在新令牌被保存到令牌存储之前应用到新令牌。
         tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
+        // 访问令牌的默认有效性(以秒为单位)
         tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30));
         endpoints.tokenServices(tokenServices);
     }
 
+    /**
+     * 授权服务器安全配置
+     * @param oauthServer 授权服务器安全配置server类
+     */
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) {
-        oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()")
+        // 允许所有token 访问
+        oauthServer.tokenKeyAccess("permitAll()")
+                // 允许check_token访问
+                .checkTokenAccess("permitAll()")
+                // 允许表单认证
                 .allowFormAuthenticationForClients();
     }
 
+    /**
+     * 处理一个 {@link Authentication} 请求在bean
+     * @return AuthenticationManager
+     */
     @Bean
     AuthenticationManager authenticationManager() {
         return authentication -> daoAuthenticationProvider().authenticate(authentication);
     }
 
+    /**
+     * Dao身份验证提供者
+     * @return DaoAuthenticationProvider
+     */
     @Bean
     public AuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
@@ -101,18 +124,29 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return daoAuthenticationProvider;
     }
 
-
+    /**
+     * j加密算法类
+     * @return PasswordEncoder
+     */
     @Bean
     PasswordEncoder passwordEncoder() {
         // 加密方式
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * token持久化策略
+     * @return JdbcTokenStore
+     */
     @Bean
     public TokenStore tokenStore() {
         return new JdbcTokenStore(dataSource);
     }
 
+    /**
+     * 客户端信息持久化策略
+     * @return JdbcClientDetailsService
+     */
     @Bean
     public ClientDetailsService clientDetailsService() {
         return new JdbcClientDetailsService(dataSource);
