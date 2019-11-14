@@ -14,10 +14,10 @@
 3. 用户可以通过客户ID和密钥以及授权码获取access token 和referrsh token和scope
 
 #### 资源api服务（order-service/open-api-service）
-1. 可自定义配置需授权url
+1. 可自定义配置需拦截授权的url
 2. 可自定义配置受限url的访问scope
 3. 未授权用户或访问权限不足用户，页面提示相信息
 4. 用户通过access token 来访问对应url
 
 
-关于该项目的更多代码讲解和逻辑讲解，请参考=>[微服务开放授权平台设计与实践]()，或浏览作者主页=>[掘金-蒋老湿](https://juejin.im/user/5b6a41ef5188251ac858752a/posts)
+关于该项目的更多代码讲解和逻辑讲解，请参考=>[微服务开放授权平台设计与实践](https://juejin.im/post/5da4452c518825647c513ba9)，或浏览作者主页=>[掘金-蒋老湿](https://juejin.im/user/5b6a41ef5188251ac858752a/posts)
