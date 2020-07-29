@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/jpsite-security-oauth2-open.iml" filepath="$PROJECT_DIR$/.idea/jpsite-security-oauth2-open.iml" />
+      <module fileurl="file://$PROJECT_DIR$/security-oauth2-open/security-oauth2-open.iml" filepath="$PROJECT_DIR$/security-oauth2-open/security-oauth2-open.iml" />
+    </modules>
+  </component>
+</project>
