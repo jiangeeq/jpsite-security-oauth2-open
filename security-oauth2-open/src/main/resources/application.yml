@@ -19,7 +19,7 @@ spring:
     static-path-pattern: /static/**
   datasource:
     name: test
-    url: jdbc:mysql://192.168.104.102:3306/rbac_db
+    url: jdbc:mysql://192.168.104.102:3306/oauth2-open
     username: root
     password: root
     # druid 连接池

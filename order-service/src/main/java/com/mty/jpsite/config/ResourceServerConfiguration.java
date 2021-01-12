@@ -18,7 +18,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
         // 对 api/order 等自定义请求进行拦截
-        http.authorizeRequests().antMatchers("/api/order/**").access("#oauth2.hasScope('read_order')")
+        http.authorizeRequests().antMatchers("/api/order/**").access("#oauth2.hasScope('all')")
                 // 拦截对 /api/product/的 get 请求
                 .antMatchers(HttpMethod.GET,"/api/product/**").authenticated()
                 // 拦截对 /api/trade/的 post 请求

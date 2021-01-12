@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8085
 
 logging:
   level:
@@ -15,6 +15,6 @@ security:
       access-token-uri: http://localhost:8080/oauth/token
       user-authorization-uri: http://localhost:8080/oauth/authorize
       ###appid
-      clientId: client_92
+      clientId: client_142
       ###appSecret
       clientSecret: 123456
